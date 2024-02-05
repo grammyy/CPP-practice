@@ -2,7 +2,8 @@
 
 ## Table of contents:
 * [Binary Tree Search](https://github.com/grammyy/CPP-practice?tab=readme-ov-file#binary-tree-search)
-
+* [Depth Search](https://github.com/grammyy/CPP-practice/tree/main?tab=readme-ov-file#depth-search)
+  
 ## Binary Tree Search
 ```
 C:\Users\grammy\Documents\GitHub\CPP-practice>binaryTree.exe 
