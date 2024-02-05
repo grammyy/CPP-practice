@@ -1,20 +1,31 @@
 #include <iostream>
+#include <utility>
 
 template <typename T>
 class SmartPointer {
     private:
-        T* ptr;
-        int* refCount;
+        struct ControlBlock {
+            T* ptr;
+            int refCount;
+
+            ControlBlock(T* rawPtr) : ptr(rawPtr), refCount(1) {}
+        };
+
+        ControlBlock* controlBlock;
 
     public:
-        SmartPointer() : ptr(nullptr), refCount(nullptr) {}
+        SmartPointer() : controlBlock(nullptr) {}
 
-        explicit SmartPointer(T* rawPtr) : ptr(rawPtr), refCount(new int(1)) {}
+        explicit SmartPointer(T* rawPtr) : controlBlock(new ControlBlock(rawPtr)) {}
 
-        SmartPointer(const SmartPointer<T>& other) : ptr(other.ptr), refCount(other.refCount) {
-            if (refCount) {
-                (*refCount)++;
+        SmartPointer(const SmartPointer<T>& other) : controlBlock(other.controlBlock) {
+            if (controlBlock) {
+                controlBlock->refCount++;
             }
+        }
+
+        SmartPointer(SmartPointer<T>&& other) noexcept : controlBlock(other.controlBlock) {
+            other.controlBlock = nullptr;
         }
 
         ~SmartPointer() {
@@ -24,37 +35,52 @@ class SmartPointer {
         SmartPointer<T>& operator=(const SmartPointer<T>& other) {
             if (this != &other) {
                 release();
-                
-                ptr = other.ptr;
-                refCount = other.refCount;
-
-                if (refCount) {
-                    (*refCount)++;
+                controlBlock = other.controlBlock;
+                if (controlBlock) {
+                    controlBlock->refCount++;
                 }
             }
+
+            return *this;
+        }
+
+        SmartPointer<T>& operator=(SmartPointer<T>&& other) noexcept {
+            if (this != &other) {
+                release();
+                controlBlock = other.controlBlock;
+                other.controlBlock = nullptr;
+            }
+
             return *this;
         }
 
         T* get() const {
-            return ptr;
+            return (controlBlock) ? controlBlock->ptr : nullptr;
         }
 
         int useCount() const {
-            return (refCount) ? *refCount : 0;
+            return (controlBlock) ? controlBlock->refCount : 0;
+        }
+
+        T& operator*() const {
+            return *(get());
+        }
+
+        T* operator->() const {
+            return get();
         }
 
     private:
         void release() {
-            if (refCount) {
-                (*refCount)--;
+            if (controlBlock) {
+                controlBlock->refCount--;
 
-                if (*refCount == 0) {
-                    delete ptr;
-                    delete refCount;
+                if (controlBlock->refCount == 0) {
+                    delete controlBlock->ptr;
+                    delete controlBlock;
                 }
 
-                ptr = nullptr;
-                refCount = nullptr;
+                controlBlock = nullptr;
             }
         }
 };
