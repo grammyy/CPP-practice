@@ -118,7 +118,50 @@ Graph
 ```
 
 ## Smart Pointer
+```
+C:\Users\Barte\Documents\GitHub\CPP-practice>smartPointer.exe 
+sp1 use count: 2
+sp2 use count: 2
+sp3 use count: 1
+sp1 use count after assignment: 3
+sp2 use count after assignment: 3
+sp3 use count after assignment: 3
+```
+***
+* Private Members:
+  * T* ptr: A raw pointer to the dynamically allocated object.
+  * int* refCount: A pointer to an integer representing the reference count of the object.
 
+```
+SmartPointer
+└── Private Members
+    ├── ptr: T*
+    └── refCount: int*
+```
+ 
+* Methods
+  * SmartPointer(): Default constructor initializing pointers to nullptr.
+  * explicit SmartPointer(T* rawPtr): Constructor taking a raw pointer and initializing the object with it, setting the reference count to 1.
+  * SmartPointer(const SmartPointer<T>& other): Copy constructor that performs deep copying of the raw pointer and increments the reference count.
+  * ~SmartPointer(): Destructor that releases resources when the reference count drops to zero.
+  * SmartPointer<T>& operator=(const SmartPointer<T>& other): Copy assignment operator that releases resources for the current object and performs deep copying for the new one.
+  * T* get() const: Getter method to retrieve the raw pointer.
+  * int useCount() const: Getter method to retrieve the current reference count.
+
+```
+└── Public Methods
+    ├── SmartPointer(): Constructor, initializes ptr and refCount to nullptr
+    ├── explicit SmartPointer(rawPtr: T*): Constructor, initializes ptr with rawPtr and refCount with 1
+    ├── SmartPointer(const SmartPointer<T>& other): Copy Constructor
+    ├── ~SmartPointer(): Destructor, releases resources when refCount drops to zero
+    ├── operator=(const SmartPointer<T>& other): Copy Assignment Operator
+    ├── get() const: Getter method, returns ptr
+    └── useCount() const: Getter method, returns current reference count
+
+└── Private Method
+    └── release(): Helper method, decrements refCount and releases resources if it reaches zero
+```
+  
 ## ThreadPool
 
 ## Thread Queue
