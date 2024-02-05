@@ -1,60 +1,62 @@
 #include <iostream>
+#include <memory>
 
+template<typename T>
 class BinarySearchTree {
     private:
         class TreeNode {
             public:
-                int key;
-                TreeNode* left;
-                TreeNode* right;
+                T key;
+                std::unique_ptr<TreeNode> left;
+                std::unique_ptr<TreeNode> right;
 
-                TreeNode(int k) : key(k), left(nullptr), right(nullptr) {}
-        };
+                TreeNode(const T& k) : key(k), left(nullptr), right(nullptr) {}
+            };
 
-        TreeNode* root;
+            std::unique_ptr<TreeNode> root;
 
-        TreeNode* insertRecursive(TreeNode* node, int key) {
-            if (node == nullptr) {
-                return new TreeNode(key);
+            std::unique_ptr<TreeNode> insertRecursive(std::unique_ptr<TreeNode>& node, const T& key) {
+                if (!node) {
+                    return std::make_unique<TreeNode>(key);
+                }
+
+                if (key < node->key) {
+                    node->left = insertRecursive(node->left, key);
+                } else if (key > node->key) {
+                    node->right = insertRecursive(node->right, key);
+                }
+
+                return std::move(node);
             }
 
-            if (key < node->key) {
-                node->left = insertRecursive(node->left, key);
-            } else if (key > node->key) {
-                node->right = insertRecursive(node->right, key);
-            }
+            bool searchRecursive(const std::unique_ptr<TreeNode>& node, const T& key) const {
+                if (!node) {
+                    return false;
+                }
 
-            return node;
-        }
-
-        bool searchRecursive(TreeNode* node, int key) {
-            if (node == nullptr) {
-                return false;
+                if (key == node->key) {
+                    return true;
+                } else if (key < node->key) {
+                    return searchRecursive(node->left, key);
+                } else {
+                    return searchRecursive(node->right, key);
+                }
             }
-
-            if (key == node->key) {
-                return true;
-            } else if (key < node->key) {
-                return searchRecursive(node->left, key);
-            } else {
-                return searchRecursive(node->right, key);
-            }
-        }
 
     public:
         BinarySearchTree() : root(nullptr) {}
 
-        void insert(int key) {
+        void insert(const T& key) {
             root = insertRecursive(root, key);
         }
 
-        bool search(int key) {
+        bool search(const T& key) const {
             return searchRecursive(root, key);
         }
 };
 
 int main() {
-    BinarySearchTree bst;
+    BinarySearchTree<int> bst;
 
     bst.insert(10);
     bst.insert(5);
