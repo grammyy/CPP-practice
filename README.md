@@ -1,7 +1,7 @@
 # Let's break it down:
 
 ## Table of contents:
-* [Binary Tree Search](https://github.com/grammyy/CPP-practice/edit/main/README.md#binary-tree-search)
+* [Binary Tree Search](https://github.com/grammyy/CPP-practice?tab=readme-ov-file#binary-tree-search)
 
 ## Binary Tree Search
 * The BinarySearchTree class has a private nested class called TreeNode. Each TreeNode has an integer key, and pointers to its left and right child nodes (subtrees).
