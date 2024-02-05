@@ -229,3 +229,49 @@ Dequeued: 4
 Dequeued: 5
 ```
 ***
+* The ThreadQueue template class is a thread-safe queue that can hold elements of any type T.
+* It has a private queue (queue_), a mutex (mutex_), and a condition variable (condition_) for synchronization.
+
+```
+ThreadQueue
+└── Private Members
+    ├── queue_: std::queue<T>
+    ├── mutex_: std::mutex
+    └── condition_: std::condition_variable
+```
+
+### Methods
+* enqueue
+  * The enqueue method adds an item to the queue in a thread-safe manner.
+  * It locks the mutex (lock) using std::unique_lock to ensure exclusive access.
+  * It then pushes the item into the queue and notifies one waiting thread through the condition variable.
+  * Finally, it releases the lock.
+* dequeue
+  * The dequeue method removes and returns an item from the queue in a thread-safe manner.
+  * It locks the mutex (lock) using std::unique_lock and waits on the condition variable until the queue is not empty.
+  * Once the condition is met (i.e., the queue is not empty), it retrieves the front item, pops it from the queue, and releases the lock.
+  * If the queue is empty, it waits until notified.
+* isEmpty
+  * The isEmpty method checks whether the queue is empty in a thread-safe manner.
+  * It locks the mutex (lock) using std::unique_lock and checks the queue_ for emptiness. 
+
+```
+
+└── Public Methods
+    ├── enqueue(item: const T&): void
+        ├── Locks mutex for exclusive access
+        ├── Pushes item into the queue
+        ├── Notifies one waiting thread through condition variable
+        └── Releases the lock
+
+    ├── dequeue(): T
+        ├── Locks mutex for exclusive access
+        ├── Waits on the condition variable until the queue is not empty
+        ├── Retrieves the front item from the queue
+        ├── Pops the front item from the queue
+        └── Releases the lock
+
+    ├── isEmpty() const: bool
+        ├── Locks mutex for exclusive access
+        └── Checks if the queue is empty
+```
