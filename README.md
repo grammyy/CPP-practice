@@ -5,7 +5,7 @@
 * [Depth Search](https://github.com/grammyy/CPP-practice/tree/main?tab=readme-ov-file#depth-search)
 * [Smart Pointers](https://github.com/grammyy/CPP-practice/tree/main?tab=readme-ov-file#smart-pointer)
 * [ThreadPool]()
-* [Thread Queue]()
+* [Thread Queue](https://github.com/grammyy/CPP-practice/tree/main?tab=readme-ov-file#thread-queue)
 
 ## Binary Tree Search
 ```
