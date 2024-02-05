@@ -4,6 +4,13 @@
 * [Binary Tree Search](https://github.com/grammyy/CPP-practice?tab=readme-ov-file#binary-tree-search)
 
 ## Binary Tree Search
+demo:
+```
+C:\Users\grammy\Documents\GitHub\CPP-practice>binaryTree.exe 
+Is 10 in BST? Yes
+Is 20 in BST? No
+```
+***
 * The BinarySearchTree class has a private nested class called TreeNode. Each TreeNode has an integer key, and pointers to its left and right child nodes (subtrees).
 * The BinarySearchTree class has a private member variable root that points to the root of the BST.
 ```
