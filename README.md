@@ -4,7 +4,9 @@
 * [Binary Tree Search](https://github.com/grammyy/CPP-practice?tab=readme-ov-file#binary-tree-search)
 * [Depth Search](https://github.com/grammyy/CPP-practice/tree/main?tab=readme-ov-file#depth-search)
 * [Smart Pointers](https://github.com/grammyy/CPP-practice/tree/main?tab=readme-ov-file#smart-pointer)
-  
+* [ThreadPool]()
+* [Thread Queue]()
+
 ## Binary Tree Search
 ```
 C:\Users\grammy\Documents\GitHub\CPP-practice>binaryTree.exe 
@@ -164,5 +166,66 @@ SmartPointer
 ```
   
 ## ThreadPool
+```
+C:\Users\grammy\Documents\GitHub\CPP-practice>threadPool.exe 
+Task 0 executed by thread 8670141377090704656
+Task 1 executed by thread 18137369640724998020
+Task 2 executed by thread 1230235464250880600
+Task 3 executed by thread 4249528327736205830
+Task 4 executed by thread 4249528327736205830
+Task 5 executed by thread 1230235464250880600
+Task 6 executed by thread 18137369640724998020
+Task 7 executed by thread 8670141377090704656
+Task 8 executed by thread 8670141377090704656
+Task 9 executed by thread 18137369640724998020
+```
+***
+* Initializes the ThreadPool with a given number of threads.
+* Each thread in the ThreadPool continuously waits for tasks to execute and executes them.
 
+### Private Members:
+* workers: Vector of worker threads that execute tasks.
+* tasks: Queue of functions representing tasks to be executed.
+* queueMutex: Mutex to synchronize access to the tasks queue.
+* coutMutex: Additional mutex to synchronize access to std::cout.
+* condition: Condition variable for thread synchronization.
+* stop: Boolean flag to indicate when the ThreadPool should stop.
+
+```
+ThreadPool
+└── Private Members
+    ├── workers: vector<thread>
+    ├── tasks: queue<function<void()>>
+    ├── queueMutex: mutex
+    ├── coutMutex: mutex
+    ├── condition: condition_variable
+    └── stop: bool
+```
+
+### Methods
+* Destructor
+  * Signals the threads to stop by setting the stop flag.
+  * Notifies all threads through the condition variable.
+  * Joins all threads to ensure they finish before the ThreadPool object is destroyed.
+* addTask
+  * Takes a callable object f and its arguments args... and returns a std::future representing the asynchronous result of the task.
+  * Creates a packaged task using std::packaged_task to wrap the callable object.
+  * Enqueues the packaged task in the tasks queue and notifies one waiting thread.
+  * Returns the future associated with the packaged task.
+   
+```
+└── Public Methods
+    ├── ThreadPool(numThreads: size_t): Constructor
+    ├── ~ThreadPool(): Destructor
+    └── addTask(F&& f, Args&&... args): template method to add a task and return a future
+```
 ## Thread Queue
+```
+C:\Users\grammy\Documents\GitHub\CPP-practice>threadQueue.exe 
+Dequeued: 1
+Dequeued: 2
+Dequeued: 3
+Dequeued: 4
+Dequeued: 5
+```
+***
