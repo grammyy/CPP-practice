@@ -4,7 +4,6 @@
 * [Binary Tree Search](https://github.com/grammyy/CPP-practice?tab=readme-ov-file#binary-tree-search)
 
 ## Binary Tree Search
-demo:
 ```
 C:\Users\grammy\Documents\GitHub\CPP-practice>binaryTree.exe 
 Is 10 in BST? Yes
@@ -68,3 +67,57 @@ BinarySearchTree
   * If the key is equal to the current node's key, it returns true.
   * If the key is less than the current node's key, it recursively calls searchRecursive on the left subtree.
   * If the key is greater, it recursively calls searchRecursive on the right subtree.
+ 
+## Depth Search
+```
+C:\Users\grammy\Documents\GitHub\CPP-practice>depthSearch.exe
+DFS starting from node 2: 2 0 1 3
+```
+***
+``` 
+0 ---- 1 ← Example visualized graph
+|      |
+2 ---- 3
+```
+
+* The Graph class has private members: numVertices (number of vertices) and adjacencyList (a vector of vectors representing the adjacency list).
+* The constructor initializes the number of vertices and the adjacency list with an empty vector for each vertex.
+
+```
+Graph
+└── Private Members
+    ├── numVertices: int
+    └── adjacencyList: vector<vector<int>>
+```
+
+### Graph Methods
+
+* addEdge Method:
+  * The addEdge method adds an edge between two vertices in the graph.
+  * It takes the source and destination vertices as parameters.
+  * It adds the destination to the adjacency list of the source, and for an undirected graph, it adds the reverse edge as well.
+* DFS Method:
+  * The DFS method performs a depth-first search traversal starting from a specified node.
+  * It uses a stack to keep track of the vertices to be visited.
+  * It initializes a boolean vector visited to keep track of visited vertices and sets all values to false.
+  * It starts with the specified startNode by pushing it onto the stack.
+  * In the DFS loop, it pops a vertex from the stack, checks if it's visited, prints it if not, marks it as visited, and then pushes its unvisited neighbors onto the stack.
+
+```
+└── Public Methods
+    ├── Graph(vertices: int): Constructor, initializes numVertices and adjacencyList
+    ├── addEdge(source: int, destination: int): void
+        └── Adds an edge between source and destination vertices in the adjacencyList
+    ├── DFS(startNode: int): void
+        └── Performs Depth-First Search starting from the given startNode
+            ├── Initialize visited array with false values
+            ├── Initialize stack for DFS traversal
+            ├── Push startNode onto the stack
+            └── stack handled while its not empty
+```
+
+## Smart Pointer
+
+## ThreadPool
+
+## Thread Queue
